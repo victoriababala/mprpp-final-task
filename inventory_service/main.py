@@ -7,12 +7,14 @@ app = FastAPI(title=f"Inventory Service N{STUDENT_N}")
 # База даних. Початкові ID починаються з 100 * N
 STOCK = {
     STUDENT_N * 100 + 1: {"name": "Laptop", "quantity": 10},
-    STUDENT_N * 100 + 2: {"name": "Mouse", "quantity": 50}
+    STUDENT_N * 100 + 2: {"name": "Mouse", "quantity": 50},
 }
+
 
 class StockUpdate(BaseModel):
     item_id: int
     quantity_change: int
+
 
 @app.get("/stock/{id}")
 def get_stock(id: int):
@@ -20,6 +22,7 @@ def get_stock(id: int):
     if id not in STOCK:
         raise HTTPException(status_code=404, detail="Item not found")
     return {"student_id": STUDENT_N, "data": STOCK[id]}
+
 
 @app.post("/stock/update")
 def update_stock(update: StockUpdate):
