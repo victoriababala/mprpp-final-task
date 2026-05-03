@@ -22,16 +22,19 @@ def create_order(order: OrderRequest):
         # Синхронний запит до Inventory Service
         response = requests.get(f"{INVENTORY_URL}/stock/{order.item_id}")
     except requests.exceptions.ConnectionError:
-        raise HTTPException(status_code=503, detail="Inventory Service is unavailable")
+        raise HTTPException(status_code=503,
+                            detail="Inventory Service is unavailable")
 
     if response.status_code == 404:
-        raise HTTPException(status_code=400, detail="Item does not exist")
+        raise HTTPException(status_code=400,
+                            detail="Item does not exist")
 
     stock_data = response.json()["data"]
 
     # Перевірка наявності на складі
     if stock_data["quantity"] < order.quantity:
-        raise HTTPException(status_code=400, detail="Not enough stock")
+        raise HTTPException(status_code=400,
+                            detail="Not enough stock")
 
     new_order = {
         "order_id": STUDENT_N * 100 + len(ORDERS) + 1,
