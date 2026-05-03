@@ -9,11 +9,9 @@ app = FastAPI(title=f"Order Service N{STUDENT_N}")
 INVENTORY_URL = "http://inventory-service:8000"
 ORDERS = []
 
-
 class OrderRequest(BaseModel):
     item_id: int
     quantity: int
-
 
 @app.post("/orders")
 def create_order(order: OrderRequest):
@@ -41,7 +39,6 @@ def create_order(order: OrderRequest):
     }
     ORDERS.append(new_order)
     return {"student_id": STUDENT_N, "data": new_order}
-
 
 @app.get("/orders")
 def get_orders():

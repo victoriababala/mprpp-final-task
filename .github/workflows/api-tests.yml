@@ -2,9 +2,9 @@ name: Automated API Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   test-microservices:
@@ -21,7 +21,12 @@ jobs:
         run: |
           pip install flake8
           flake8 .
-
+      - name: Demonstrate GitHub Secrets
+        env:
+          SUPER_SECRET: ${{ secrets.MY_SUPER_SECRET_KEY }}
+        run: |
+          echo "Спроба вивести секрет у консоль:"
+          echo "Мій секрет: $SUPER_SECRET"
       - name: Start Docker Compose
         run: docker compose up -d --build
 
@@ -31,7 +36,7 @@ jobs:
       - name: Install Node.js and Newman
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Run Postman Collection
         run: npm install -g newman && newman run collection.json
