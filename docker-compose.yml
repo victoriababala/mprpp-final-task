@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  inventory-service:
+    build: ./inventory_service
+    ports:
+      - "8001:8000" # Прокидання порту 8000 + N
+    networks:
+      - lab-network
+
+  order-service:
+    build: ./order_service
+    ports:
+      - "9001:8000" # Прокидання порту 9000 + N
+    depends_on:
+      - inventory-service # Сервіс-споживач вказує на залежність
+    networks:
+      - lab-network
+
+networks:
+  lab-network:
+    driver: bridge
